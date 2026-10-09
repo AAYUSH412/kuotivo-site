@@ -1,0 +1,138 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   KUOTIVO - design tokens
+   ============================================================================
+   PALETTE DECISION (2026-10-09). The page is pure white with a single
+   neutral-grey recessed tone. No cream, no warm paper, no tint of any kind.
+
+   Reasoning, because the value matters less than the rule: a tinted ground
+   does the work of making a page "feel designed" for free, which is exactly
+   why every AI-built site reaches for warm paper. Strip the tint and the page
+   has to earn its look from structure, type and hairlines instead. It is also
+   what a drawing sheet actually is.
+
+   ONE accent: #3B49E8. It is the product's own --color-primary,
+   oklch(54.6% 0.245 262) converted to sRGB, and the same indigo the quotation
+   and invoice PDFs use. tasteskill 4.2 discourages a saturated blue-violet as
+   a DEFAULT reach; this is not a default reach, it is the existing brand, so
+   the documented override applies. It is used as a MARK only: links, the live
+   price, interactive affordances, and the live parts of a drawing. Never a
+   headline fill, never a glow, never a gradient.
+
+   THEME LOCK (tasteskill 4.11): light only, no dark mode, by explicit owner
+   instruction. No section inverts. The drawing-engine section is recessed with
+   --surface-sunken, which is a tint within the same theme family, not a flip.
+
+   SHAPE LOCK (tasteskill 4.4): cards 12px, media 16px, interactive full-pill.
+   ========================================================================= */
+@theme {
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+
+  --color-page: #ffffff;
+  --color-surface-sunken: #f4f5f7;
+  --color-surface-raised: #ffffff;
+
+  /* Off-black, never #000 (tasteskill 9.A). */
+  --color-ink: #0c0d10;
+  --color-body: #52585f;
+  --color-muted: #8a9099;
+
+  --color-hairline: #e4e7eb;
+  --color-hairline-soft: #eef0f3;
+
+  --color-accent: #3b49e8;
+  --color-accent-deep: #2a34b8;
+  --color-accent-wash: #eef0fe;
+
+  --color-good: #1f7a4d;
+  --color-stop: #b3261e;
+
+  --radius-card: 12px;
+  --radius-media: 16px;
+
+  --ease-draft: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: var(--color-page);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Rupee amounts, millimetre dimensions and document numbers. Tabular so a
+     column of them aligns the way it does inside the product. */
+  .numeric {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.015em;
+  }
+}
+
+/* The hero drawing draws itself in. Pure CSS so it paints before any
+   JavaScript has hydrated: it is the first thing a visitor sees and it must
+   not wait for a bundle. Motivation (tasteskill 5): it demonstrates the
+   product's single claim, that the window draws and prices itself. */
+@keyframes draft-in {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draft-fade-in {
+  to {
+    opacity: 1;
+  }
+}
+
+.draft-line {
+  stroke-dasharray: var(--len, 300);
+  stroke-dashoffset: var(--len, 300);
+  animation: draft-in 1.1s var(--ease-draft) forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+.draft-fade {
+  opacity: 0;
+  animation: draft-fade-in 0.6s var(--ease-draft) forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .draft-line,
+  .draft-fade {
+    animation: none;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

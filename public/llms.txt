@@ -1,0 +1,77 @@
+# Kuotivo
+
+> Window and fenestration quoting software for Indian fabricators. Draw a window
+> on a grid, Kuotivo generates a real shop drawing and prices it from your rate
+> card, then turns the quotation into a GST tax invoice and tracks the money.
+
+In production since 25 July 2026. Built and operated by Aayush Vaghela.
+Contact: aayush@kuotivo.in · Application: https://app.kuotivo.in
+
+## Who it is for
+
+Small and mid-sized Indian fabrication businesses: aluminium windows and doors,
+structural glazing, railing, modular furniture and interior work. Typically an
+owner who writes his own quotations and invoices, one or two staff, and a few
+hundred documents a year.
+
+## What makes it different
+
+Most quoting software treats a window as a line item. A window quotation is
+actually a list of drawings with sizes, so Kuotivo generates the drawing.
+
+You lay a window out as a grid. Column widths and row heights in millimetres,
+and what each panel does. From that it produces a shop drawing a fabricator can
+work from: dimension chains, a plan strip, opening-direction arrows, a legend and
+a VIEW FROM INSIDE annotation.
+
+- 12 panel kinds: fixed, openable, sliding, sliding door, casement left/right,
+  awning, hopper, louver, exhaust fan, door left/right
+- Merged panels via column and row spans. A full-width top light over two
+  sliders, a tall fixed pane beside a slider
+- Sliders of 1 to 4 tracks with forced shutter direction, so a centre-opening
+  pair draws correctly
+- Two mosquito-mesh modes: mesh on its own track of a 3-track slider, or a
+  separate fixed frame over the panel. Modelled as a choice because both at once
+  is not buildable
+- Arched heads (semicircular, segmental, stilted) as extra geometry above an
+  unchanged rectangular grid
+- Palladian heads, which change the price: the area above the flat shoulders is
+  deducted from billable area
+
+The drawing engine is a pure library with no database or network access, so the
+price calculation, the live browser preview and the PDF all call the same code.
+
+## Indian GST
+
+- CGST + SGST or IGST is decided from the customer's GST state code against the
+  company's, and is recomputed from the customer at invoice conversion rather
+  than copied from the quotation
+- Gap-free statutory numbering per financial year, unique per business, e.g.
+  QT/26-27/00042, INV/26-27/00010, RCPT/26-27/00003
+- HSN and SAC codes per invoice line
+- Reverse charge, e-way bill number and vehicle number
+- Rounding is stored and shown as its own visible line
+- The financial year rolls in April and each year has its own counter
+
+## Modules
+
+Dashboard · Alerts · Customers · Quotations · Invoices · Money to Collect ·
+Window Types · Rate Cards · Reports · Users · Audit Logs · Settings
+
+Billing units are per piece, per square foot or per running foot, and a line can
+be shown in square feet or square metres. Nine trade categories: aluminium,
+glazing, railing, furniture, interior, electrical, painting, civil and custom.
+
+## Reference customer
+
+Aastha Enterprise, Vadodara, Gujarat. Aluminium, glazing and furniture
+fabrication, proprietor Hitesh Panchal. Before Kuotivo, each quotation was built
+by drawing every window in AutoCAD, exporting it as an image and pasting it into
+a hand-made layout: one to two hours per quotation. Invoices were written in
+Microsoft Word.
+
+## Pages
+
+- https://kuotivo.in - product overview
+- https://kuotivo.in/privacy - what is collected and where it is stored
+- https://kuotivo.in/terms - terms of use
