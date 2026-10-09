@@ -71,6 +71,17 @@
   ],
   "redirects": [
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.kuotivo.in"
+        }
+      ],
+      "destination": "https://kuotivo.in/",
+      "permanent": true
+    },
+    {
       "source": "/:path*",
       "has": [
         {
