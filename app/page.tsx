@@ -15,7 +15,7 @@ import { CardSwap } from "@/components/CardSwap";
 import { BentoGrid, BentoCard } from "@/components/ui/bento-grid";
 import { TextAnimate } from "@/components/ui/text-animate";
 import {
-  CTA_LABEL, cta, demoMailto, engine, gst, hero, how, inside, problem, proof, reference,
+  cta, demoCta, engine, gst, hero, how, inside, primaryCta, problem, proof, reference,
 } from "@/lib/content";
 
 /**
@@ -68,8 +68,14 @@ function Hero() {
             </TextAnimate>
           </h1>
           <p className="mt-6 max-w-[46ch] text-[1.0625rem] leading-[1.6] text-body">{hero.lede}</p>
+          {/* 🔴 Still two buttons, not three. The secondary stays "See a
+              drawing" rather than becoming the demo: the drawing engine is what
+              makes this product different from a spreadsheet, and a reader this
+              high up the page has not yet seen the thing they would be booking
+              a demo of. The demo lives in the nav and in the closing section,
+              both of which this reader passes. */}
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Cta href={demoMailto}>{CTA_LABEL}</Cta>
+            <Cta href={primaryCta.href}>{primaryCta.label}</Cta>
             <Cta href="#drawings" variant="ghost">
               See a drawing
             </Cta>
@@ -417,8 +423,14 @@ function Closing() {
           {cta.title}
         </h2>
         <p className="mx-auto mt-5 max-w-[50ch] text-[1.0625rem] leading-[1.65] text-body">{cta.body}</p>
-        <div className="mt-8 flex justify-center">
-          <Cta href={demoMailto}>{CTA_LABEL}</Cta>
+        {/* The one place both paths are offered together: a reader who has
+            reached the bottom has seen the product and is choosing how to
+            start, which is exactly the decision these two buttons are. */}
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <Cta href={primaryCta.href}>{primaryCta.label}</Cta>
+          <Cta href={demoCta.href} variant="ghost">
+            {demoCta.label}
+          </Cta>
         </div>
       </Reveal>
     </section>

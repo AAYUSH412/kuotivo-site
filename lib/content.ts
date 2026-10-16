@@ -24,15 +24,16 @@ export const site = {
     "Kuotivo turns a window drawing into a priced, GST-ready quotation in minutes. Built for Indian aluminium and glazing fabricators, with real shop drawings, correct CGST, SGST and IGST, and gap-free statutory numbering.",
   email: "aayush@kuotivo.in",
   app: "https://app.kuotivo.in",
+  /** How long a signup application takes to be reviewed. Quoted in the closing
+   *  copy, and the same promise the dashboard's confirmation screen makes. */
+  reviewWindow: "one working day",
   author: { name: "Aayush Vaghela", url: "https://aayush-vaghela.vercel.app" },
   liveSince: "25 July 2026",
 } as const;
 
-/** One CTA label for one intent, used in the nav, the hero and the footer
- *  (tasteskill 4.5, no duplicate CTA intent). */
-export const CTA_LABEL = "Book a demo";
-
-export const demoMailto =
+/** Prefilled so the reply contains the four things worth knowing before a
+ *  demo. Not exported: it reaches components through `demoCta` below. */
+const demoMailto =
   `mailto:${site.email}` +
   `?subject=${encodeURIComponent("Demo request for Kuotivo")}` +
   `&body=${encodeURIComponent(
@@ -50,6 +51,38 @@ export const demoMailto =
       "Thanks,",
     ].join("\n"),
   )}`;
+
+/**
+ * Two ways in, and only one of them is primary.
+ *
+ * Until the dashboard shipped a public signup form (2026-10-16) there was
+ * exactly one way to become a customer: email the owner. That is why the whole
+ * site had a single CTA label. Self serve now exists, so the primary action is
+ * the form and the demo becomes the secondary.
+ *
+ * tasteskill 4.5 bans two labels competing for the SAME intent, which is not
+ * what this is: "Get started" and "Book a demo" go to different places and suit
+ * different readers. What the rule does still forbid is two primaries, so the
+ * demo is a ghost button everywhere it appears beside the signup.
+ *
+ * 🔴 Label and destination are paired in one object on purpose. They used to be
+ * two separate exports, `CTA_LABEL` and `demoMailto`, written side by side at
+ * five call sites. Adding a second destination to that shape means any call site
+ * can quietly say "Get started" over a mailto link, and nothing would fail.
+ * Pairing them makes that unrepresentable, and deleting `CTA_LABEL` rather than
+ * repointing it turns a call site missed in this change into a compile error
+ * instead of a button that lies about where it goes.
+ */
+export const primaryCta = {
+  label: "Get started",
+  /** Derived, so the host is written once. */
+  href: `${site.app}/signup`,
+} as const;
+
+export const demoCta = {
+  label: "Book a demo",
+  href: demoMailto,
+} as const;
 
 export const nav = [
   { label: "Drawings", href: "#drawings" },
@@ -266,7 +299,18 @@ export const reference = {
   caption: "Aluminium sections being measured in a fabrication workshop.",
 } as const;
 
+/**
+ * The closing section, rewritten when signup shipped.
+ *
+ * 🔴 It says a person reviews the application, and it says it before anyone
+ * fills the form in. "Get started" on most sites means an account appears the
+ * moment you submit; here it means a request lands in a queue the owner reads
+ * by hand. The dashboard's own confirmation screen already says "Someone will
+ * review it and get back to you, usually within one working day", so the number
+ * below is not an invention and the two surfaces have to keep agreeing. If the
+ * review window ever changes, `site.reviewWindow` and the app's copy both move.
+ */
 export const cta = {
   title: "See it on your own windows.",
-  body: "Tell me what you fabricate and roughly how many quotations you issue a month. I will show you the product on a real job rather than a canned demo.",
+  body: `Request an account and I will read it myself, usually within ${site.reviewWindow}. If you would rather be walked through it first, book a demo and I will show you the product on a real job rather than a canned one.`,
 } as const;
