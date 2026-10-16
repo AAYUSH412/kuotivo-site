@@ -3,9 +3,14 @@ import { ArrowUpRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { cn } from "@/lib/utils";
 
 /**
- * The primary action. One label for one intent across the whole page
- * (tasteskill 4.5), so this component owns the look and `content.CTA_LABEL`
- * owns the words.
+ * An action. This component owns the look; `lib/content.ts` owns the words and
+ * the destination, paired together in `primaryCta` and `demoCta` so a label can
+ * never drift from where it points.
+ *
+ * One primary per view (tasteskill 4.5). Since signup shipped there are two
+ * actions on the page, so the demo is always `variant="ghost"` where it appears
+ * beside "Get started" and the solid treatment stays reserved for the one
+ * action a reader is meant to take.
  *
  * The arrow sits in its own circular well flush with the right padding and
  * shifts diagonally on hover, so the control has internal tension instead of

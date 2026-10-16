@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useScroll, useMotionValueEvent } from "motion/react";
 import { ListIcon, XIcon } from "@phosphor-icons/react/dist/ssr";
 import { Cta } from "@/components/Cta";
-import { CTA_LABEL, demoMailto, nav, site } from "@/lib/content";
+import { demoCta, nav, primaryCta, site } from "@/lib/content";
 
 /**
  * A plain sticky bar, not a floating pill.
@@ -59,8 +59,15 @@ export function Nav() {
             ))}
           </nav>
 
-          <div className="ml-auto hidden md:block">
-            <Cta href={demoMailto}>{CTA_LABEL}</Cta>
+          {/* Two actions, one primary. The demo keeps its place in the bar
+              because it is still how most of this trade prefers to buy, but it
+              is the quiet one now that the form exists. Hidden below `lg` so
+              the bar never carries two pills at tablet width. */}
+          <div className="ml-auto hidden items-center gap-2 md:flex">
+            <Cta href={demoCta.href} variant="ghost" className="hidden lg:inline-flex">
+              {demoCta.label}
+            </Cta>
+            <Cta href={primaryCta.href}>{primaryCta.label}</Cta>
           </div>
 
           <button
@@ -98,13 +105,18 @@ export function Nav() {
                   {item.label}
                 </motion.a>
               ))}
+              {/* The sheet has the room the bar does not, so both actions are
+                  shown in full at every width. */}
               <motion.div
-                className="mt-8"
+                className="mt-8 flex flex-col items-start gap-3"
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.26, ease: [0.16, 1, 0.3, 1] }}
               >
-                <Cta href={demoMailto}>{CTA_LABEL}</Cta>
+                <Cta href={primaryCta.href}>{primaryCta.label}</Cta>
+                <Cta href={demoCta.href} variant="ghost">
+                  {demoCta.label}
+                </Cta>
               </motion.div>
             </nav>
           </motion.div>

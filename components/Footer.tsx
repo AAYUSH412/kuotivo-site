@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { site } from "@/lib/content";
+import { primaryCta, site } from "@/lib/content";
 
 export function Footer() {
   return (
@@ -21,7 +21,14 @@ export function Footer() {
             </a>
           </div>
 
+          {/* Plain text links, not a button: the footer already has the page's
+              CTA above it, and a second solid pill here would read as a new
+              offer. "Get started" sits above "Sign in" because someone reading
+              the footer for a way in does not have an account yet. */}
           <nav className="flex flex-col gap-2.5 text-[13.5px] md:items-end">
+            <a href={primaryCta.href} className="text-body transition-colors hover:text-ink">
+              {primaryCta.label}
+            </a>
             <a href={site.app} className="text-body transition-colors hover:text-ink">
               Sign in
             </a>
