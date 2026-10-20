@@ -21,8 +21,8 @@ export const site = {
   url: "https://kuotivo.in",
   tagline: "Window and fenestration quoting software for Indian fabricators",
   description:
-    "Kuotivo turns a window drawing into a priced, GST-ready quotation in minutes. Built for Indian aluminium and glazing fabricators, with real shop drawings, correct CGST, SGST and IGST, and gap-free statutory numbering.",
-  email: "aayush@kuotivo.in",
+    "Kuotivo turns a window drawing into a priced, GST-ready quotation in minutes. Built for Indian aluminium and glazing fabricators, with real shop drawings, correct CGST, SGST and IGST, and gap-free statutory numbering. One quotation also carries railing, furniture, interior, electrical, painting and civil work.",
+  email: "contact@kuotivo.in",
   app: "https://app.kuotivo.in",
   /** How long a signup application takes to be reviewed. Quoted in the closing
    *  copy, and the same promise the dashboard's confirmation screen makes. */
@@ -38,7 +38,7 @@ const demoMailto =
   `?subject=${encodeURIComponent("Demo request for Kuotivo")}` +
   `&body=${encodeURIComponent(
     [
-      "Hello Aayush,",
+      "Hello,",
       "",
       "I would like to see Kuotivo.",
       "",
@@ -85,8 +85,9 @@ export const demoCta = {
 } as const;
 
 export const nav = [
+  { label: "Watch", href: "#watch" },
   { label: "Drawings", href: "#drawings" },
-  { label: "How it works", href: "#how" },
+  { label: "Trades", href: "#trades" },
   { label: "GST", href: "#gst" },
   { label: "Inside", href: "#inside" },
 ] as const;
@@ -96,6 +97,37 @@ export const hero = {
   lede: "Draw the window on a grid. Kuotivo prices it and produces the shop drawing, then turns the quotation into a GST invoice.",
   priceMeta: "34.88 sq.ft at ₹355.00 per sq.ft",
   priceLabel: "Line value",
+} as const;
+
+/**
+ * The three-step strip and the demo video, which share a section.
+ *
+ * The strip exists because a visitor previously had to read four paragraphs
+ * before learning what the software does. Three verbs and eighteen words now
+ * answer that above the fold of the second screen, and the video directly
+ * beneath proves each of them.
+ *
+ * 🔴 `videoId` is the only place the YouTube id is written. The poster is a
+ * product screenshot, NOT the YouTube thumbnail: that thumbnail is a frame of
+ * this same homepage, so it would show the hero sitting directly above it.
+ */
+export const watch = {
+  title: "Draw it, price it, invoice it.",
+  lede: "Eighty four seconds, no sound needed, real data.",
+  steps: [
+    { icon: "PencilSimpleLine", verb: "Draw", body: "Lay the window out on a grid." },
+    { icon: "CurrencyInr", verb: "Price", body: "Your rate card does the maths." },
+    { icon: "Receipt", verb: "Invoice", body: "The quotation becomes a GST invoice." },
+  ],
+  videoId: "i3KEBFgAG2s",
+  duration: "1:24",
+  poster: "/shots/draw-window.png",
+  posterAlt:
+    "The Kuotivo draw window editor, paused at the start of the demo video: a three panel grid on the left and a live shop drawing with dimension chains on the right.",
+  playLabel: "Play the Kuotivo demo, 1 minute 24 seconds",
+  /** Shown under the frame. Honest about what pressing play costs. */
+  note: "Hosted on YouTube. Nothing loads from Google until you press play.",
+  fallback: "Watch on YouTube",
 } as const;
 
 /** A single credibility line under the hero. There is exactly one customer, so
@@ -173,6 +205,103 @@ export const engine = {
   ],
 } as const;
 
+/**
+ * The nine trades a quotation can carry.
+ *
+ * Not a marketing list. The order, the labels and the billing units are the
+ * product's own: `CATEGORY_ORDER` and `ITEM_CATEGORY_LABEL` in the dashboard's
+ * `types/quotation.ts`, and `DEFAULT_UNIT` in `AddGenericItemForm.tsx`. If a
+ * trade is ever added or a default unit changes, this list is wrong and should
+ * be corrected from those three declarations rather than from memory.
+ *
+ * 🔴 `drawn` is the honest part. Only Aluminium & Windows reaches the drawing
+ * engine; every other trade is a plain priced line. The dashboard says so in
+ * its own comment at `WindowsStep.tsx:33`. Stating the limit here turns it into
+ * a reason to buy ("one quotation, the whole job") instead of a disappointment
+ * the customer discovers in week one.
+ */
+export const trades = {
+  title: "A window job is never only windows.",
+  lede: "Nine trades on one quotation, each billed in its own unit. Hitesh's real quotations run aluminium beside furniture, interior, railing, electrical, painting and civil work.",
+  drawnNote: "Drawing engine",
+  plainNote: "Priced line",
+  caption: "Pick a trade to see the line it produces.",
+  items: [
+    {
+      key: "ALUMINIUM",
+      icon: "Door",
+      label: "Aluminium & Windows",
+      drawn: true,
+      line: { name: "3 track sliding window with fixed mesh", spec: "2700 x 1200 mm · Alu sliding · 5mm clear", qty: "34.88 sq.ft", rate: "₹355.00", amount: "₹12,382.40" },
+    },
+    {
+      key: "FURNITURE",
+      icon: "Hammer",
+      label: "Furniture",
+      drawn: false,
+      line: { name: "Workstation table", spec: "4' x 2'3\" x 2'6\" · laminate finish", qty: "4 No.", rate: "₹30,000.00", amount: "₹1,20,000.00" },
+    },
+    {
+      key: "INTERIOR",
+      icon: "Armchair",
+      label: "Interior",
+      drawn: false,
+      line: { name: "False ceiling, gypsum board", spec: "Reception and corridor", qty: "420 sq.ft", rate: "₹95.00", amount: "₹39,900.00" },
+    },
+    {
+      key: "RAILING",
+      icon: "Stairs",
+      label: "S.S. Railing",
+      drawn: false,
+      line: { name: "Staircase railing, 304 grade", spec: "38mm top rail · glass infill", qty: "46 r.ft", rate: "₹1,850.00", amount: "₹85,100.00" },
+    },
+    {
+      key: "ELECTRICAL",
+      icon: "Lightning",
+      label: "Electrical Work",
+      drawn: false,
+      line: { name: "Modular switch point", spec: "6A, concealed conduit", qty: "38 No.", rate: "₹650.00", amount: "₹24,700.00" },
+    },
+    {
+      key: "PAINTING",
+      icon: "PaintRoller",
+      label: "Colour / Painting",
+      drawn: false,
+      line: { name: "Interior emulsion, two coats", spec: "Putty, primer and finish", qty: "1,250 sq.ft", rate: "₹42.00", amount: "₹52,500.00" },
+    },
+    {
+      key: "CIVIL",
+      icon: "Buildings",
+      label: "Mini Civil Work",
+      drawn: false,
+      line: { name: "Brick work and plaster", spec: "Window opening alterations", qty: "165 sq.ft", rate: "₹310.00", amount: "₹51,150.00" },
+    },
+    {
+      key: "GLAZING",
+      icon: "Stack",
+      label: "Glazing",
+      drawn: true,
+      line: { name: "Structural glazing, front elevation", spec: "12mm toughened · spider fitting", qty: "280 sq.ft", rate: "₹1,240.00", amount: "₹3,47,200.00" },
+    },
+    {
+      key: "CUSTOM",
+      icon: "Plus",
+      label: "Custom",
+      drawn: false,
+      line: { name: "Site supervision and transport", spec: "Anything the other eight do not cover", qty: "1 No.", rate: "₹18,000.00", amount: "₹18,000.00" },
+    },
+  ],
+} as const;
+
+/**
+ * The spine, in four screens.
+ *
+ * It was eight. A depth stack nobody watches to the end is a stack that wastes
+ * its best card, and the four that were cut (window types, rate cards, reports,
+ * audit logs) are already rows in `inside` below, so no information left the
+ * page. Four is also roughly twelve seconds of cycle, which a reader will sit
+ * through.
+ */
 export const how = {
   title: "Quotation to invoice to money in the bank.",
   lede: "One spine. Everything else in the product serves it.",
@@ -200,30 +329,6 @@ export const how = {
       body: "Money to collect, overdue, collected this month, and which quotations are still waiting for a reply.",
       shot: "/shots/dashboard.png",
       alt: "The Kuotivo dashboard showing money to collect, overdue, collected this month and quotations to follow up.",
-    },
-    {
-      title: "Keep the catalog once",
-      body: "Every window type you fabricate, drawn once and picked from the quotation wizard after that.",
-      shot: "/shots/window-types.png",
-      alt: "The Kuotivo window types catalog with thumbnail drawings for nine window types.",
-    },
-    {
-      title: "Price from a rate card",
-      body: "Profile system and glass spec to a rupee rate, with a hardware add on and a minimum billable area.",
-      shot: "/shots/rate-cards.png",
-      alt: "The Kuotivo rate cards screen listing profile systems against glass specifications and rates.",
-    },
-    {
-      title: "Close the books",
-      body: "Receivables ageing, sales and GST summary, customer statement. PDF and CSV.",
-      shot: "/shots/reports.png",
-      alt: "The Kuotivo reports screen offering receivables ageing, sales and GST summary and customer statement.",
-    },
-    {
-      title: "Know what changed",
-      body: "Every edit recorded against the document number, so the history still reads usefully years later.",
-      shot: "/shots/audit-logs.png",
-      alt: "The Kuotivo audit log listing who changed which document and when.",
     },
   ],
 } as const;
@@ -270,7 +375,7 @@ export const inside = {
       name: "Sales",
       items: [
         ["Customers", "GSTIN and PAN, state and GST state code, site and project defaults."],
-        ["Quotations", "Customer, lines, draw or pick the window, price, PDF."],
+        ["Quotations", "Customer, lines across nine trades, draw or pick the window, price, PDF."],
         ["Invoices", "Convert a quotation or raise a blank one. Draft, finalized, cancelled."],
         ["Money to Collect", "Receipts, part payments, seven methods, reference numbers."],
       ],

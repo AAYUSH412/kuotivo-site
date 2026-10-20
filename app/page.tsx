@@ -1,8 +1,9 @@
 import Image from "next/image";
 import {
-  ArrowsLeftRightIcon, ArrowsOutLineHorizontalIcon, CircleIcon,
-  EqualsIcon, GridFourIcon, RowsIcon,
+  ArrowsLeftRightIcon, ArrowsOutLineHorizontalIcon, CircleIcon, CurrencyInrIcon,
+  EqualsIcon, GridFourIcon, PencilSimpleLineIcon, ReceiptIcon, RowsIcon,
 } from "@phosphor-icons/react/dist/ssr";
+import type { Icon } from "@phosphor-icons/react/lib";
 
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
@@ -12,26 +13,35 @@ import { Cta } from "@/components/Cta";
 import { HeroDrawing } from "@/components/HeroDrawing";
 import { PriceTicker } from "@/components/PriceTicker";
 import { CardSwap } from "@/components/CardSwap";
+import { VideoEmbed } from "@/components/VideoEmbed";
+import { TradePicker } from "@/components/TradePicker";
 import { BentoGrid, BentoCard } from "@/components/ui/bento-grid";
 import { TextAnimate } from "@/components/ui/text-animate";
 import {
-  cta, demoCta, engine, gst, hero, how, inside, primaryCta, problem, proof, reference,
+  cta, demoCta, engine, gst, hero, how, inside, primaryCta, problem, proof,
+  reference, trades, watch,
 } from "@/lib/content";
 
 /**
- * Nine sections, and tasteskill 4.7 wants at least four different layout
+ * Eleven sections, and tasteskill 4.7 wants at least four different layout
  * families across them. The families used, once each unless noted:
  *   hero          asymmetric split
  *   proof         single hairline band of running text
+ *   watch         centred step strip over a centred media frame
  *   problem       offset media with a verb list
  *   drawings      full bleed screenshot over a bento grid
+ *   trades        control grid beside a live panel
  *   how           depth card stack beside an index
  *   gst           lead panel plus a dense sub grid
  *   inside        four grouped columns
  *   reference     split with media (the only repeat of a split, and not adjacent)
  *   cta           centred block
  *
- * Eyebrow budget: ceil(9 / 3) = 3. Exactly one is used, on the drawings
+ * `watch` and `cta` are both centred, which is the one family used twice. They
+ * sit at opposite ends of the page and centre different things, a media frame
+ * against a text block, so they do not read as a repeat.
+ *
+ * Eyebrow budget: ceil(11 / 3) = 3. Exactly one is used, on the drawings
  * section. Every other section opens on its headline.
  */
 export default function Home() {
@@ -41,8 +51,10 @@ export default function Home() {
       <main id="top">
         <Hero />
         <Proof />
+        <Watch />
         <Problem />
         <Drawings />
+        <Trades />
         <How />
         <Gst />
         <Inside />
@@ -117,6 +129,70 @@ function Proof() {
             <span className="font-medium text-ink">{proof.customer}</span>, {proof.trade},{" "}
             {proof.since}.
           </p>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* ── Watch ───────────────────────────────────────────────────────────────
+   The three step strip and the demo, in one section.
+
+   The strip is the page's answer to "what does this actually do", given in
+   three verbs before any prose. The video directly beneath it is the proof,
+   and putting them together means a reader who understands the strip can stop
+   there, while a reader who wants to see it does not have to go looking.
+
+   Three cells with an icon and a verb is close to the "three equal feature
+   cards" tasteskill 9.C warns about, so the cells are deliberately NOT cards:
+   no borders, no backgrounds, no shadows. They are three columns of a single
+   hairline rule, with the rule carrying a connector between them at desktop. */
+function Watch() {
+  const icons: Record<string, Icon> = {
+    PencilSimpleLine: PencilSimpleLineIcon,
+    CurrencyInr: CurrencyInrIcon,
+    Receipt: ReceiptIcon,
+  };
+
+  return (
+    <section id="watch" className="py-20 md:py-24">
+      <div className="mx-auto max-w-[980px] px-4 sm:px-6">
+        <div className="text-center">
+          <h2 className="mx-auto max-w-[18ch] text-[clamp(1.75rem,3.2vw,2.6rem)] leading-[1.08] font-semibold tracking-[-0.03em]">
+            {watch.title}
+          </h2>
+          <p className="mt-4 text-[15px] text-body">{watch.lede}</p>
+        </div>
+
+        <ol className="mt-12 grid gap-y-8 border-t border-hairline pt-8 sm:grid-cols-3 sm:gap-x-8">
+          {watch.steps.map((s, i) => {
+            const Glyph = icons[s.icon];
+            return (
+              <Reveal key={s.verb} delay={i * 0.07}>
+                {/* No connector line between the steps. There was one, spanning
+                    the grid gap, and it failed for a reason worth recording: the
+                    cell content is left aligned but the gap is on the far right
+                    of a ~300px column, so the line landed next to the FOLLOWING
+                    icon instead of between two of them and read as a stray dash.
+                    A connector only works when the things it joins are centred
+                    in their cells. Three verbs under one hairline group fine on
+                    their own. */}
+                <li className="flex gap-3.5 sm:block">
+                  <Glyph size={22} weight="light" className="mt-px shrink-0 text-accent" />
+                  <div className="sm:mt-3.5">
+                    <h3 className="text-[15px] font-semibold text-ink">{s.verb}</h3>
+                    <p className="mt-1 max-w-[30ch] text-[13.5px] leading-[1.55] text-body">
+                      {s.body}
+                    </p>
+                  </div>
+                </li>
+              </Reveal>
+            );
+          })}
+        </ol>
+
+        <Reveal delay={0.08} className="mt-12">
+          <VideoEmbed />
         </Reveal>
       </div>
     </section>
@@ -245,6 +321,38 @@ function Drawings() {
             </Reveal>
           ))}
         </BentoGrid>
+      </div>
+    </section>
+  );
+}
+
+/* ── Trades ──────────────────────────────────────────────────────────────
+   A control grid beside a live panel, which is a layout family nothing else
+   on the page uses.
+
+   Placed immediately after the drawing engine on purpose. That section makes
+   the narrow, deep claim (windows, drawn properly); this one makes the wide
+   one (and the other eight trades on the same quotation). In the other order
+   the product reads as generic quoting software with a drawing bolted on,
+   which is the positioning to avoid. */
+function Trades() {
+  return (
+    <section id="trades" className="py-20 md:py-28">
+      <div className="mx-auto max-w-[1240px] px-4 sm:px-6">
+        <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between md:gap-12">
+          <h2 className="max-w-[17ch] text-[clamp(1.75rem,3.2vw,2.6rem)] leading-[1.08] font-semibold tracking-[-0.03em]">
+            {trades.title}
+          </h2>
+          <p className="max-w-[48ch] text-[15px] leading-[1.6] text-body md:pb-1.5">
+            {trades.lede}
+          </p>
+        </div>
+
+        <Reveal delay={0.06} className="mt-12">
+          <TradePicker />
+        </Reveal>
+
+        <p className="mt-5 text-[12.5px] text-muted">{trades.caption}</p>
       </div>
     </section>
   );

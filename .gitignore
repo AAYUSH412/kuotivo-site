@@ -44,3 +44,7 @@ next-env.d.ts
 # with nothing project specific in it. Project knowledge lives in README.md and
 # in Build-Document/Kuotivo-Website-Build-Document.md.
 AGENTS.md
+
+# Working note: the ImageKit URLs turned out to be the same captures already
+# in public/shots, so nothing references them. Kept locally, not shipped.
+imagekit.txt

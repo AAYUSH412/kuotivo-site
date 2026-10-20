@@ -26,14 +26,26 @@ export default function Privacy() {
       <h2>This website</h2>
       <p>
         <strong>No analytics, no tracking pixels and no cookies.</strong> Nothing on{" "}
-        {site.domain} profiles you or follows you anywhere else. The only way this site
-        sends anything is if you click &ldquo;Book a demo&rdquo;, which opens your own
-        email client with a message you write and send yourself.
+        {site.domain} profiles you or follows you anywhere else. This site sends
+        something on your behalf in exactly two places, and both of them need a
+        deliberate click: &ldquo;Book a demo&rdquo;, which opens your own email client
+        with a message you write and send yourself, and the play button on the demo
+        video, covered below.
       </p>
       <p>
         Fonts are served from Google Fonts, and the site is hosted on Vercel. Both
         receive your IP address as a normal part of serving a web page, and both keep
         their own short-term request logs.
+      </p>
+      <p>
+        <strong>The demo video is the one exception, and only if you press play.</strong>{" "}
+        The home page shows a still image with a play button. Until you press it, nothing
+        is requested from YouTube or from any other Google service. Press it and the
+        video loads from <span className="whitespace-nowrap">youtube-nocookie.com</span>,
+        which is YouTube&rsquo;s reduced tracking host: it still receives your IP address
+        and records a view, but it does not use the visit to build an advertising profile.
+        If you would rather not, the link beside the video opens it on YouTube in a
+        separate tab instead.
       </p>
 
       <h2>The application</h2>
